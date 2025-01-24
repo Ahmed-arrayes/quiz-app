@@ -1,11 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
+
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_login import LoginManager, UserMixin, login_required, current_user
 from flask_bcrypt import Bcrypt
-from datetime import datetime
-import os
-from ai_helper import ai
-from config import DevelopmentConfig  # استيراد إعدادات التطوير
+from datetime import datetime, timezone
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
@@ -42,7 +40,8 @@ class QuizResult(db.Model):
     score = db.Column(db.Integer, nullable=False)
     total_questions = db.Column(db.Integer, nullable=False)
     time_taken = db.Column(db.Integer)  # بالثواني
-    date_taken = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date_taken = db.Column(db.DateTime, nullable=False, 
+                          default=lambda: datetime.now(timezone.utc))
 
 class UserProgress(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -52,7 +51,8 @@ class UserProgress(db.Model):
     correct_count = db.Column(db.Integer, default=0)
     total_count = db.Column(db.Integer, default=0)
     last_study_tip = db.Column(db.Text)
-    last_updated = db.Column(db.DateTime, default=datetime.utcnow())
+    last_updated = db.Column(db.DateTime, 
+                            default=lambda: datetime.now(timezone.utc))
 
 @app.route('/submit-quiz', methods=['POST'])
 @login_required
