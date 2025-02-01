@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}تسجيل الدخول{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">تسجيل الدخول إلى النظام</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('auth.login') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control", placeholder="example@domain.com") }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.password.label(class="form-label") }}
+                            {{ form.password(class="form-control") }}
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            {{ form.remember_me(class="form-check-input") }}
+                            {{ form.remember_me.label(class="form-check-label") }}
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt me-2"></i>تسجيل الدخول
+                            </button>
+                            <a href="{{ url_for('auth.register') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-user-plus me-2"></i>إنشاء حساب جديد
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ميزة الذكاء الاصطناعي للاستعادة التلقائية -->
+<div class="container mt-4 text-center">
+    <div class="ai-recovery-section">
+        <button class="btn btn-link" onclick="showAIRecovery()">
+            <i class="fas fa-robot me-2"></i>استعادة الحساب بالذكاء الاصطناعي
+        </button>
+        <div id="aiRecoveryForm" style="display: none;" class="mt-3">
+            <form class="row g-3 justify-content-center" onsubmit="handleAIRecovery(event)">
+                <div class="col-md-6">
+                    <input type="email" class="form-control" 
+                           placeholder="البريد الإلكتروني المسجل" 
+                           id="recoveryEmail" required>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-key me-2"></i>استعادة آمنة
+                    </button>
+                </div>
+                <div id="recoveryStatus" class="col-md-12 mt-2"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showAIRecovery() {
+    document.getElementById('aiRecoveryForm').style.display = 'block';
+}
+
+async function handleAIRecovery(event) {
+    event.preventDefault();
+    const email = document.getElementById('recoveryEmail').value;
+    const statusDiv = document.getElementById('recoveryStatus');
+    
+    statusDiv.innerHTML = `
+        <div class="alert alert-info">
+            <i class="fas fa-cog fa-spin me-2"></i>جارٍ التحقق باستخدام الذكاء الاصطناعي...
+        </div>
+    `;
+
+    try {
+        const response = await fetch('/api/v1/ai/recovery', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: email })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            statusDiv.innerHTML = `
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i>
+                    ${data.message || 'تم إرسال تعليمات الاستعادة إلى بريدك الإلكتروني'}
+                </div>
+            `;
+        } else {
+            statusDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    ${data.error || 'فشلت عملية الاستعادة، يرجى المحاولة لاحقًا'}
+                </div>
+            `;
+        }
+    } catch (error) {
+        statusDiv.innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                خطأ في الاتصال بالخادم: ${error.message}
+            </div>
+        `;
+    }
+}
+</script>
+{% endblock %}

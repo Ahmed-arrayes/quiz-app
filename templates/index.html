@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}الصفحة الرئيسية{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 mb-4">مرحباً بك في تطبيق الاختبارات الذكي</h1>
+            <p class="lead mb-4">
+                نظام اختبارات متطور يستخدم الذكاء الاصطناعي لتقديم تجربة تعليمية مخصصة لكل طالب
+            </p>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-brain fa-3x text-primary mb-3"></i>
+                    <h3 class="card-title">ذكاء اصطناعي</h3>
+                    <p class="card-text">
+                        يستخدم التطبيق تقنيات الذكاء الاصطناعي لتوليد أسئلة مخصصة وتقديم تحليل دقيق لأدائك
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
+                    <h3 class="card-title">تتبع التقدم</h3>
+                    <p class="card-text">
+                        تابع تقدمك وحسن مستواك من خلال التحليلات المفصلة والتوصيات الشخصية
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-graduation-cap fa-3x text-info mb-3"></i>
+                    <h3 class="card-title">تعلم ذكي</h3>
+                    <p class="card-text">
+                        احصل على نصائح وتوجيهات مخصصة لتحسين مستواك في المواد المختلفة
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col text-center">
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-tachometer-alt"></i> الذهاب إلى لوحة التحكم
+            </a>
+            {% else %}
+            <a href="{{ url_for('quiz_result') }}" class="btn btn-success btn-lg me-3">
+                <i class="fas fa-user-plus"></i> تسجيل حساب جديد
+            </a>
+            <a href="{{ url_for('home') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: transform 0.3s;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card i {
+    transition: transform 0.3s;
+}
+
+.card:hover i {
+    transform: scale(1.1);
+}
+
+.btn-lg {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+}
+</style>
+{% endblock %}

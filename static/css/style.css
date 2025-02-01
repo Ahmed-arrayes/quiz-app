@@ -1,0 +1,105 @@
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.2s;
+    -webkit-transition: transform 0.2s; /* Safari */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    -webkit-transform: translateY(-5px); /* Safari */
+}
+
+/* Quiz Styles */
+.question-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.timer {
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+.options .form-check {
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+    -webkit-transition: background-color 0.2s; /* Safari */
+}
+
+.options .form-check:hover {
+    background-color: #f8f9fa;
+}
+
+/* Dashboard Styles */
+.performance-stats .stat-item {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+}
+
+.progress {
+    height: 20px;
+    border-radius: 10px;
+}
+
+/* Result Page Styles */
+.score-circle {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.feedback .alert {
+    border-radius: 10px;
+    padding: 15px 20px;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 20px;
+    }
+    
+    .score-circle {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .display-1 {
+        font-size: 2.5rem;
+    }
+}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}تسجيل جديد{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">إنشاء حساب جديد</h4>
+                </div>
+                
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('auth_bp.register') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.username.label(class="form-label") }}
+                            {{ form.username(class="form-control" + (' is-invalid' if form.username.errors)) }}
+                            {% for error in form.username.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control" + (' is-invalid' if form.email.errors)) }}
+                            {% for error in form.email.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.password.label(class="form-label") }}
+                            {{ form.password(class="form-control" + (' is-invalid' if form.password.errors)) }}
+                            {% for error in form.password.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form.confirm_password.label(class="form-label") }}
+                            {{ form.confirm_password(class="form-control" + (' is-invalid' if form.confirm_password.errors)) }}
+                            {% for error in form.confirm_password.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">تسجيل حساب جديد</button>
+                    </form>
+
+                    <div class="mt-4 text-center">
+                        <span>لديك حساب؟</span>
+                        <a href="{{ url_for('auth_bp.login') }}" class="text-decoration-none">سجل الدخول</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h5 class="text-center mb-3">مزايا الذكاء الاصطناعي:</h5>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6><i class="fas fa-brain"></i> توليد اختبارات ذكية</h6>
+                                <p class="text-muted small">اختبارات مخصصة بناءً على مستوى أدائك</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6><i class="fas fa-chart-line"></i> تحليل أداء متقدم</h6>
+                                <p class="text-muted small">تقارير تفصيلية عن نقاط القوة والضعف</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

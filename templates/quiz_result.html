@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}نتيجة الاختبار{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- بطاقة النتيجة الرئيسية -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-4">نتيجة الاختبار</h2>
+                    <div class="display-1 mb-4 {% if score >= 70 %}text-success{% elif score >= 50 %}text-warning{% else %}text-danger{% endif %}">
+                        {{ "%.1f"|format(score) }}%
+                    </div>
+                    <div class="progress mb-3" style="height: 20px;">
+                        <div class="progress-bar {% if score >= 70 %}bg-success{% elif score >= 50 %}bg-warning{% else %}bg-danger{% endif %}" 
+                             role="progressbar" style="width: {{ score }}%">
+                        </div>
+                    </div>
+                    <p class="lead">أجبت على {{ correct_answers }} من {{ total_questions }} سؤال بشكل صحيح</p>
+                    
+                    <!-- رسالة تشجيعية -->
+                    <div class="alert alert-info mt-3">
+                        {{ ai_analysis.encouragement_message }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تحليل الأداء -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-3">تحليل الأداء</h3>
+                    <div class="performance-analysis">
+                        {{ ai_analysis.performance_analysis|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- نصائح للتحسين -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-3">نصائح للتحسين</h3>
+                    <ul class="list-group list-group-flush">
+                        {% for tip in study_tips %}
+                        <li class="list-group-item">{{ tip }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- المواضيع المقترحة -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-3">المواضيع المقترحة للدراسة</h3>
+                    <div class="suggested-topics">
+                        {% for topic in next_topics %}
+                        <div class="topic-item mb-2">
+                            <i class="fas fa-book-reader text-primary"></i>
+                            {{ topic }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- مراجعة الأسئلة -->
+        <div class="col-12 mt-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">مراجعة الأسئلة</h3>
+                    {% for question in questions %}
+                    <div class="question-review mb-4">
+                        <div class="question-text mb-3">
+                            <h5>السؤال {{ loop.index }}:</h5>
+                            <p>{{ question.question_text }}</p>
+                        </div>
+                        
+                        <div class="options">
+                            {% set options = [question.option_a, question.option_b, question.option_c, question.option_d] %}
+                            {% for option in options %}
+                            <div class="option mb-2 {% if loop.index0 == question.correct_answer|int %}correct-answer{% endif %}">
+                                {{ ["أ", "ب", "ج", "د"][loop.index0] }}) {{ option }}
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        {% if question.feedback %}
+                        <div class="feedback mt-3">
+                            <h6>التعليق:</h6>
+                            <p>{{ question.feedback }}</p>
+                        </div>
+                        {% endif %}
+
+                        {% if question.tip %}
+                        <div class="study-tip mt-2">
+                            <h6>نصيحة للدراسة:</h6>
+                            <p>{{ question.tip }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary me-2">
+            <i class="fas fa-home"></i> العودة للوحة التحكم
+        </a>
+        <a href="{{ url_for('quiz') }}" class="btn btn-success">
+            <i class="fas fa-redo"></i> بدء اختبار جديد
+        </a>
+    </div>
+</div>
+
+<!-- إضافة CSS مخصص -->
+<style>
+.correct-answer {
+    background-color: #d4edda;
+    border-left: 4px solid #28a745;
+    padding: 10px;
+}
+
+.question-review {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.option {
+    padding: 8px;
+    border-radius: 4px;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.feedback, .study-tip {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 4px;
+    border-left: 4px solid #17a2b8;
+}
+
+.topic-item {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.topic-item i {
+    margin-right: 10px;
+}
+</style>
+{% endblock %}
