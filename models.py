@@ -31,6 +31,9 @@ class User(UserMixin, db.Model):
             return "متقدم"
         return "محترف"
 
+    def get(user_id):
+        return getattr(User, 'id')
+
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question_text = db.Column(db.String(500), nullable=False)
@@ -61,3 +64,21 @@ class UserProgress(db.Model):
     total_count = db.Column(db.Integer, default=0)
     last_study_tip = db.Column(db.Text)
     last_updated = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+class QuizSession(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    session_token = db.Column(db.String(64), unique=True, nullable=False)
+    session_data = db.Column(db.JSON, nullable=False)
+    subject_path = db.Column(db.JSON, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    questions = db.relationship('QuizSessionQuestion', backref='quiz_session', lazy=True)
+
+class QuizSessionQuestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.Integer, db.ForeignKey('quiz_session.id'), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
+    order = db.Column(db.Integer, nullable=False)
+    user_answer = db.Column(db.String(255), nullable=True)
+    is_correct = db.Column(db.Boolean, default=False)
+    is_answered = db.Column(db.Boolean, default=False)
