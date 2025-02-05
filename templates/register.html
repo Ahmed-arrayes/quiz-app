@@ -11,12 +11,12 @@
                 </div>
                 
                 <div class="card-body">
-                    <form method="POST" action="{{ url_for('auth_bp.register') }}">
+                    <form method="POST" action="{{ url_for('auth.register') }}">
                         {{ form.hidden_tag() }}
                         
                         <div class="mb-3">
                             {{ form.username.label(class="form-label") }}
-                            {{ form.username(class="form-control" + (' is-invalid' if form.username.errors)) }}
+                            {{ form.username(class="form-control" + (' is-invalid' if form.username.errors else '')) }}
                             {% for error in form.username.errors %}
                             <div class="invalid-feedback">{{ error }}</div>
                             {% endfor %}
@@ -24,7 +24,7 @@
 
                         <div class="mb-3">
                             {{ form.email.label(class="form-label") }}
-                            {{ form.email(class="form-control" + (' is-invalid' if form.email.errors)) }}
+                            {{ form.email(class="form-control" + (' is-invalid' if form.email.errors else '')) }}
                             {% for error in form.email.errors %}
                             <div class="invalid-feedback">{{ error }}</div>
                             {% endfor %}
@@ -32,7 +32,7 @@
 
                         <div class="mb-3">
                             {{ form.password.label(class="form-label") }}
-                            {{ form.password(class="form-control" + (' is-invalid' if form.password.errors)) }}
+                            {{ form.password(class="form-control" + (' is-invalid' if form.password.errors else '')) }}
                             {% for error in form.password.errors %}
                             <div class="invalid-feedback">{{ error }}</div>
                             {% endfor %}
@@ -40,7 +40,7 @@
 
                         <div class="mb-4">
                             {{ form.confirm_password.label(class="form-label") }}
-                            {{ form.confirm_password(class="form-control" + (' is-invalid' if form.confirm_password.errors)) }}
+                            {{ form.confirm_password(class="form-control" + (' is-invalid' if form.confirm_password.errors else '')) }}
                             {% for error in form.confirm_password.errors %}
                             <div class="invalid-feedback">{{ error }}</div>
                             {% endfor %}
@@ -51,7 +51,7 @@
 
                     <div class="mt-4 text-center">
                         <span>لديك حساب؟</span>
-                        <a href="{{ url_for('auth_bp.login') }}" class="text-decoration-none">سجل الدخول</a>
+                        <a href="{{ url_for('auth.login') }}" class="text-decoration-none">سجل الدخول</a>
                     </div>
                 </div>
             </div>
