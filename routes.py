@@ -1,5 +1,5 @@
 # routes.py
-from flask import session
+from flask import session, Blueprint
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user, login_user, logout_user
 from datetime import datetime, timezone
@@ -90,7 +90,7 @@ def register():
         ).first()
         if existing_user:
             flash('اسم المستخدم أو البريد الإلكتروني موجود مسبقًا', 'danger')
-            return edirrect(url_for('auth_bp.register'))
+            return redirect(url_for('auth.register'))
 
         new_user = User(
             username=form.username.data,
@@ -116,7 +116,7 @@ def login():
         if user and check_password_hash(user.password_hash, form.password.data):
             login_user(user)
             flash('تم تسجيل الدخول بنجاح!', 'success')
-            return redirect(url_for('main_bp.home'))
+            return redirect(url_for('main.home'))
         flash('بيانات الدخول غير صحيحة', 'danger')
     return render_template('login.html', form=form)
 
@@ -154,7 +154,7 @@ def dashboard():
     except Exception as e:
         logger.error(f"خطأ في تحميل لوحة التحكم: {str(e)}", exc_info=True)
         flash('حدث خطأ أثناء تحميل لوحة التحكم', 'danger')
-        return redirect(url_for('main_bp.home'))
+        return redirect(url_for('main.home'))
 
 @main_bp.route('/leaderboard')
 @login_required
