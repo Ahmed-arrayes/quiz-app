@@ -2,6 +2,7 @@
 
 from flask import Flask
 from config import Config  # استيراد Config
+from models import User
 
 # إنشاء تطبيق Flask
 app = Flask(__name__)
@@ -12,6 +13,12 @@ from extensions import db, login_manager
 
 db.init_app(app)
 login_manager.init_app(app)
+login_manager.login_view = 'auth.login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.query(User).get(user_id)
+
 
 # تسجيل الـ Blueprints
 from routes import main_bp, auth_bp, quiz_bp
